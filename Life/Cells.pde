@@ -28,8 +28,8 @@ public class Cell{
     return state;
   }
   
-  public void setTempState(boolean state){
-    tempState = state;
+  public void setTempState(boolean newstate){
+    tempState = newstate;
   }
   
   public void updateState(){
@@ -46,7 +46,7 @@ public class Cell{
   
   public void placeOnGrid() {
     stroke(255);
-      if (state) {
+      if (state == true) {
       fill(255, 255, 255);
     } else {
       fill(0, 0, 0);

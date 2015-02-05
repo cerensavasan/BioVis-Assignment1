@@ -23,7 +23,7 @@ void draw(){
   background(0);  //black
   grid.display();
   if(start){
-    delay(500);
+    delay(200);
     grid.update();
   }
 }
