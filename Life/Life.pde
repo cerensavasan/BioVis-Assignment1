@@ -23,7 +23,7 @@ void draw(){
   background(0);  //black
   grid.display();
   if(start){
-    delay(200);
+    delay(500);
     grid.update();
   }
 }
@@ -32,6 +32,16 @@ void draw(){
 //pause function
 void keyPressed(){
   if(key == 'p'){
-     start = false;
+     start = !start;
   }
+  if(key == 'c'){
+     grid.clear();
+  }
+  if(key == 'r'){
+     grid.randomBoard();
+  }  
+}
+
+void mousePressed(){
+  grid.toggleCell();
 }

@@ -40,13 +40,16 @@ public class Grid {
       for (int j=0; j<numRows; j++) {   //iterates for each cell
         int neighbors = numAliveNeighbors(i, j);
         Cell currentCell = grid[i][j];
-        if (currentCell.getState() == true && neighbors < 2 || neighbors > 3 ) {
-          currentCell.setTempState(false);
-        } else {
-          if (neighbors == 3 || neighbors == 2) {
+        if (currentCell.getState() == true){
+         if(neighbors < 1 || neighbors > 3 ) {
+          currentCell.setTempState(false); //die if no neighbors or too many
+         }
+        } 
+        else {
+         if (neighbors == 3 || neighbors == 2) { //birth if enough neighbors
             currentCell.setTempState(true);
-          } else {
-            currentCell.setTempState(false);
+         } else {                         
+            currentCell.setTempState(false); //dead if dead an not enough or too many neighbors
           }
         }
       }
@@ -54,7 +57,7 @@ public class Grid {
 
     for (int i=0; i<numColumns; i++) {
       for (int j=0; j<numRows; j++) {
-        grid[i][j].updateState();
+        grid[i][j].updateState();  //set current state to the new state
       }
     }
   }
@@ -73,7 +76,7 @@ public class Grid {
   public void randomBoard() {
     for (int i = 0; i < numColumns; i++) {
       for (int j = 0; j < numRows; j++) { //for each cell
-        if (int(random(100)) % 10 == 0) {
+        if (int(random(100)) % 35  == 0) {
           grid[i][j].setAlive();
         } else {
           grid[i][j].setDead();
@@ -92,19 +95,38 @@ public class Grid {
     }
   }
   
-  private int numAliveNeighbors(int x, int y) {
-    int numNeighbors = 0;
-    
-    for (int i = x - 1; i <= x + 1; i++) { //whats next to the cell in x axis
-      for (int j = y - 1; j <= y + 1; j++) { //whats above and below cell in y axis
-        if (i != x && j != y) {
-          numNeighbors += doesGridContainLiveCell(i, j) ? 1: 0; //if there is a neighbor, add
-        }
-      }
-    }
-
+  private int numAliveNeighbors(int x, int y) { 
+      // And visit all the neighbours of each cell
+      int numNeighbors = 0; // We'll count the neighbours
+      for (int xx=x-1; xx<=x+1;xx++) {
+        for (int yy=y-1; yy<=y+1 ;yy++) {  
+          if (((xx>=0)&&(xx<100))&&((yy>=0)&&(yy<100))) { // Make sure you are not out of bounds
+            if (!((xx==x)&&(yy==y))) { // Make sure to to check against self
+              if (grid[xx][yy].getState() == true){
+                numNeighbors ++; // Check alive neighbours and count them
+              }
+            } // End of if
+          } // End of if
+        } // End of yy loop
+      } //End of xx loop
+    print(numNeighbors);
     return numNeighbors;  //total amt of neighbors
-  }
+    }
+   
+   
+   
+   
+   
+   
+    //int numNeighbors = 0;
+    
+    //for (int i = x - 1; i <= x + 1; i++) { //whats next to the cell in x axis
+    //  for (int j = y - 1; j <= y + 1; j++) { //whats above and below cell in y axis
+    //    if (i != x && j != y) {
+    //      numNeighbors += doesGridContainLiveCell(i, j) ? 1: 0; //if there is a neighbor, add
+    //    }
+    //  }
+    //}
   
   
   //checks if the the cell is live
