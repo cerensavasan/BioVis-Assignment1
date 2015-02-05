@@ -1,3 +1,7 @@
+//CS4802 - Assignment 1
+//Written by Ceren Savasan
+//username: csavasan
+
 //Class decleration and sub-routines
 public class Cell{
   int x;                   //x-coord
@@ -20,6 +24,9 @@ public class Cell{
     state = false;
   }
 
+
+
+  //GETTERS AND SETTERS
   public void changeState(){
     state = !state;
   }
@@ -44,17 +51,20 @@ public class Cell{
     state = false;
   }
   
+  
+  
+  //DRAW CELL ON GRID
   public void placeOnGrid() {
     stroke(255);
-      if (state == true) {
+      if (state == true) {  //WHITE IF ALIVE
       fill(255, 255, 255);
     } else {
-      fill(0, 0, 0);
+      fill(0, 0, 0);   //BLACK IF DEAD
     }
-    rect(x, y, CELL_WIDTH, CELL_HEIGHT);
+    rect(x, y, CELL_WIDTH, CELL_HEIGHT);   //SIZE OF CELL
   } 
   
-  public boolean containsPoint(int x, int y) {
+  public boolean containsCell(int x, int y) {
     boolean withinX = this.x <= x && x <= (this.x + CELL_WIDTH);
     boolean withinY = this.y <= y && y <= (this.y + CELL_HEIGHT);
     return withinX && withinY;

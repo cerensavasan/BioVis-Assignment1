@@ -23,7 +23,7 @@ void draw(){
   background(0);  //black
   grid.display();
   if(start){
-    delay(200);
+    delay(500);
     grid.update();
   }
 }
@@ -31,17 +31,17 @@ void draw(){
 
 //pause function
 void keyPressed(){
-  if(key == 'p'){
+  if(key == 'p'){   //PAUSE
      start = !start;
   }
-  if(key == 'c'){
+  if(key == 'c'){  //KILL ALL CELLS
      grid.clear();
   }
-  if(key == 'r'){
+  if(key == 'r'){    //RESTART AND RANDOMIZE CELL LOCATIONS
      grid.randomBoard();
   }  
 }
 
-void mousePressed(){
+void mousePressed(){   //KILL/BIRTH A CELL
   grid.toggleCell();
 }

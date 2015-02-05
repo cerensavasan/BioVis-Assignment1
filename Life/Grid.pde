@@ -1,3 +1,7 @@
+//CS4802 - Assignment 1
+//Written by Ceren Savasan
+//username: csavasan
+
 //100 rows & 100 columns
 static int gridWidth = 100;
 static int gridHeight = 100;
@@ -7,18 +11,20 @@ color alive = color(255); //white
 color dead = color (0);  //black
 
 public class Grid {
-  int numRows = gridWidth;
-  int numColumns = gridHeight;
+  int numRows = gridWidth;  //100 rows
+  int numColumns = gridHeight;  //100 columns
+ 
   //grid decleration
   Cell[][] grid;
-  Cell[][] updateGrid;
   
+  //grid creation
   public Grid(int numRows, int numColumns){
     this.numRows = numRows;
     this.numColumns = numColumns;
     grid = new Cell[numRows][numColumns];
   }
   
+  //initalize grid
   public void init(){
     for(int i = 0; i < numColumns; i++) {
       for (int j = 0; j < numRows; j++) {
@@ -27,6 +33,7 @@ public class Grid {
     }
   }
   
+  //iterate through rows and columns and place all cells (dead or alive)
   public void display(){
     for(int i = 0; i < numColumns; i++) {
       for (int j = 0; j < numRows; j++) {
@@ -35,6 +42,7 @@ public class Grid {
     }
   }
   
+  //main function that checks for neighbors and decides on birth/death situations
   public void update() {
     for (int i=0; i<numColumns; i++) {
       for (int j=0; j<numRows; j++) {   //iterates for each cell
@@ -44,6 +52,8 @@ public class Grid {
          if(currentCell.getState() == true && (neighbors.size() < 1 || neighbors.size() > 3) ) {
           currentCell.setTempState(false); //die if no neighbors or  too many
          }
+         if (currentCell.getState() == true && (neighbors.size() == 3 || neighbors.size() == 2)){    //birth if enough neighbors
+            currentCell.setTempState(true);
         } 
         else {
          if (currentCell.getState() == false && neighbors.size() == 3){    //birth if enough neighbors
@@ -54,25 +64,57 @@ public class Grid {
         }
       }
     }
-
-    for (int i=0; i<numColumns; i++) {
+    
+    i = 0;
+    
+    //double check neighbors for new state (to reduce spread rate)
+    
+    for (i=0; i<numColumns; i++) {
+      for (int j=0; j<numRows; j++) {   //iterates for each cell
+        ArrayList<Cell> newNeighbors = getAliveNeighbors(i,j);
+        Cell newCurrentCell = grid[i][j];
+        if (newCurrentCell.getState() == true){
+         if(newCurrentCell.getState() == true && (newNeighbors.size() < 1 || newNeighbors.size() > 3) ) {
+          newCurrentCell.setTempState(false); //die if no neighbors or  too many
+         }
+          if (newCurrentCell.getState() == true && (newNeighbors.size() == 3 || newNeighbors.size() == 2)){    //birth if enough neighbors
+            newCurrentCell.setTempState(true);
+          }
+        } 
+        else {
+         if (newCurrentCell.getState() == false && newNeighbors.size() == 3){    //birth if enough neighbors
+            newCurrentCell.setTempState(true);
+         } else {                         
+            newCurrentCell.setTempState(false); //dead if dead an not enough or too many neighbors
+          }
+        }
+      }
+    }
+    
+    i = 0;
+    
+    //set the actual states of cells to those temp states decided above
+    for (i=0; i<numColumns; i++) {
       for (int j=0; j<numRows; j++) {
         grid[i][j].updateState();  //set current state to the new state
       }
     }
   }
+  }
+  
 
-
+  //mouse click to kill/give birth to cell
   public void toggleCell() {
     for (int i = 0; i < numColumns; i++) {
       for (int j = 0; j < numRows; j++) {
-        if (grid[i][j].containsPoint(mouseX, mouseY)) {
+        if (grid[i][j].containsCell(mouseX, mouseY)) {
           grid[i][j].changeState();
         }
       }
     }
   }
   
+  //press r to randomize board, also this is the initial config
   public void randomBoard() {
     for (int i = 0; i < numColumns; i++) {
       for (int j = 0; j < numRows; j++) { //for each cell
@@ -95,6 +137,8 @@ public class Grid {
     }
   }
   
+  
+  //now many alive neighbors? this is a helper function RETURNS INT
   private  int numAliveNeighbors(int x, int y) { 
       // And visit all the neighbours of each cell
       int numNeighbors = 0; // We'll count the neighbours
@@ -112,6 +156,7 @@ public class Grid {
     return numNeighbors;  //total amt of neighbors
     }
     
+  //Returns actual array of neighbors
   private ArrayList<Cell> getAliveNeighbors(int x, int y) { 
       // And visit all the neighbours of each cell
       ArrayList<Cell> neighbors = new ArrayList<Cell>();
@@ -127,6 +172,6 @@ public class Grid {
           } // End of if
         } // End of yy loop
       } //End of xx loop
-    return neighbors;  //total amt of neighbors
+    return neighbors;  //all of neighbors in an array
     }
 }
